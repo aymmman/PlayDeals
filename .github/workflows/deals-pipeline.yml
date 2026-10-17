@@ -1,0 +1,55 @@
+name: Update deals
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deals-pipeline
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unzip project
+        run: |
+          shopt -s nullglob
+          for f in *.zip; do unzip -o -q "$f"; done
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Backend tests
+        run: |
+          pip install -q pytest
+          cd backend && python -m pytest -q
+      - name: Load previous data
+        run: |
+          mkdir -p data
+          if git fetch -q origin deals-data; then
+            git --work-tree=data checkout origin/deals-data -- . || true
+            git reset -q
+          fi
+      - name: Collect, verify and publish
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+        run: cd backend && python -m playdeals.run --data-dir ../data
+      - name: Push to deals-data branch
+        run: |
+          cd data
+          git init -q -b deals-data
+          git config user.name "deals-bot"
+          git config user.email "deals-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deals update $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" deals-data
+      - name: Check Google Play parsing health
+        run: python backend/check_health.py data/health.json
