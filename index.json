@@ -1,0 +1,11 @@
+{
+ "schema_version": 1,
+ "generated_at": 1794069032,
+ "countries": [
+  {
+   "code": "US",
+   "count": 11,
+   "file": "deals_us.json"
+  }
+ ]
+}
