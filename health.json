@@ -1,0 +1,66 @@
+{
+ "summary": {
+  "ran_at": 1795230947,
+  "candidates": 95,
+  "records": 321,
+  "checked": 120,
+  "play_requests": 123,
+  "results": {
+   "_listing_read_ok": 120,
+   "VERIFIED_DISCOUNT": 18,
+   "EXPIRED": 12,
+   "VERIFIED_FREE": 12,
+   "REJECTED": 78
+  },
+  "removed_by_retention": 0,
+  "published": {
+   "us": 30
+  },
+  "developer_expansion": {
+   "pages_read": 3,
+   "new_candidates": 7,
+   "errors": 0
+  },
+  "backlog_unchecked": 0
+ },
+ "sources": {
+  "manual_watchlist": {
+   "name": "Curated watchlist (our own list)",
+   "enabled": true,
+   "last_run": 1795230947,
+   "status": "ok",
+   "last_success": 1795230947,
+   "last_count": 95
+  },
+  "reddit_googleplaydeals": {
+   "name": "r/googleplaydeals via Reddit OAuth Data API",
+   "enabled": true,
+   "last_run": 1795230947,
+   "status": "skipped",
+   "note": "missing_credentials"
+  },
+  "wearosfaces_partner_feed": {
+   "name": "WearOS Faces (deals + coupons)",
+   "enabled": false,
+   "status": "disabled",
+   "note": "pending: site terms forbid automated scraping; ask the owner for a feed"
+  },
+  "appbrain_deals": {
+   "name": "AppBrain deals",
+   "enabled": false,
+   "status": "disabled",
+   "note": "pending: commercial data company with a paid API; ask before reuse"
+  },
+  "appagg_deals": {
+   "name": "AppAgg deals",
+   "enabled": false,
+   "status": "disabled",
+   "note": "blocked: pages sit behind a JavaScript bot check; no documented feed found"
+  },
+  "developer_expansion": {
+   "name": "Other apps by developers who have a live deal (Google Play developer pages)",
+   "enabled": true,
+   "status": "built_in"
+  }
+ }
+}
